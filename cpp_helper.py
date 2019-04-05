@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import argparse
+
 def getData(class_name : str):
     class_name_define = class_name.upper()
     obracket = '{'
@@ -31,6 +33,10 @@ private:
 
     file_cpp = """#include "{class_name}.hpp"
 
+/*
+** Builtin functions
+*/
+
 {class_name}::{class_name}()
 {obracket}
 {cbracket}
@@ -47,7 +53,13 @@ private:
 {class_name}& operator=(const {class_name}& src);
 {obracket}
     return *this;
-{cbracket}""".format(
+{cbracket}
+
+/*
+** Class Specific functions
+*/
+
+""".format(
         class_name = class_name,
         obracket = obracket,
         cbracket = cbracket,
@@ -57,7 +69,7 @@ private:
 
 
 def main(class_name : str):
-    class_name = class_name.capitalize()
+    # class_name = class_name.capitalize()
 
     file_hpp, file_cpp = getData(class_name)
 
@@ -70,10 +82,16 @@ def main(class_name : str):
         f.write(file_cpp)
 
 if __name__ == '__main__':
-    import sys
-    if len(sys.argv) != 1:
-        del sys.argv[0]
-        for n in sys.argv:
-            main(n)
-    else:
-        n = ""
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-c", "--classes", nargs='+', type=str,
+        help="Class names to implements", default=None, required=True,
+    )
+
+    args = parser.parse_args()
+
+    for class_name in args.classes:
+        main(class_name)
+
+    exit(0)
