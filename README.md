@@ -1,2 +1,2 @@
 # Utils42
-Utilitary scripts for 42 personnal work
+Utilitary scripts for 42 personal work
